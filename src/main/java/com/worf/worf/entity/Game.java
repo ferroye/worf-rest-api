@@ -1,11 +1,14 @@
 package com.worf.worf.entity;
 
-import org.springframework.stereotype.Component;
+import java.util.UUID;
 
 /**
  * A game should have
  */
 
-@Component
+//@Getter
 public class Game {
+    private UUID id;
+    private Player gameOwner;
+    int playerNumber;
 }
