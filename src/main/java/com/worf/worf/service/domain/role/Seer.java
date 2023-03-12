@@ -5,7 +5,7 @@ import com.worf.worf.service.domain.Ability;
 import java.util.Arrays;
 
 public class Seer extends God {
-    public Seer(Player player){
+    public Seer(){
         super.setAbilities(Arrays.asList(Ability.VOTE,Ability.INSPECT));
     }
 }

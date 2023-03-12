@@ -1,8 +1,8 @@
-package com.worf.worf.service.wolf.factory;
+package com.worf.worf.service.wolf.stage;
 
 import com.worf.worf.service.StageFactory;
 import com.worf.worf.service.StageProcessor;
-import com.worf.worf.service.domain.role.Player;
+import com.worf.worf.service.domain.role.Role;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,18 +12,22 @@ import java.util.List;
 public class StageFactoryChain implements StageFactory {
     private List<StageFactory> stageFactoryChain;
 
-    public StageFactoryChain(StageFactory villagerFactory,
-                             StageFactory seerFactory,
+    public StageFactoryChain(StageFactory seerFactory,
                              StageFactory wolfFactory,
-                             StageFactory witchFactory){
+                             StageFactory witchFactory) {
         this.stageFactoryChain = Arrays.asList(
-                villagerFactory,
                 seerFactory,
                 wolfFactory,
                 witchFactory);
     }
 
     @Override
-    public StageProcessor createStage(Player player) {
+    public StageProcessor createStage(Role role) {
+        for (StageFactory stageFactory : stageFactoryChain) {
+            StageProcessor stageProcessor = stageFactory.createStage(role);
+            if (stageProcessor != null)
+                return stageProcessor;
+        }
+        return null;
     }
 }

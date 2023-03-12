@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Wolf extends Role{
 
-    public Wolf(Player player){
+    public Wolf(){
         super.setAbilities(Arrays.asList(Ability.KILL,Ability.VOTE));
     }
 }

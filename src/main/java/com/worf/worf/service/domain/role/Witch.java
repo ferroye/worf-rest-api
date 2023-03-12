@@ -5,7 +5,7 @@ import com.worf.worf.service.domain.Ability;
 import java.util.Arrays;
 
 public class Witch extends God{
-    public Witch(Player player){
+    public Witch(){
         this.setAbilities(Arrays.asList(Ability.VOTE,Ability.SAVE,Ability.POISON));
     }
 }
