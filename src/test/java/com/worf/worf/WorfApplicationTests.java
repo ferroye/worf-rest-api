@@ -1,62 +1,54 @@
 package com.worf.worf;
 
+import com.worf.worf.service.domain.Action;
 import com.worf.worf.service.domain.Game;
+import com.worf.worf.service.domain.WinCondition;
 import com.worf.worf.service.domain.role.Player;
 import com.worf.worf.service.domain.role.Seer;
 import com.worf.worf.service.domain.role.Witch;
 import com.worf.worf.service.domain.role.Wolf;
-import com.worf.worf.service.wolf.GameManagerService;
-import com.worf.worf.service.wolf.stage.StageFactoryChain;
+import com.worf.worf.service.wolf.WolfGameManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.sound.sampled.*;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Objects;
 
 @SpringBootTest
 class WorfApplicationTests {
 
-    GameManagerService gameManagerService;
-    @Autowired
-    StageFactoryChain roleFactoryChain;
+    WolfGameManager wolfGameManager;
 
     @BeforeEach
     void init() {
-        gameManagerService = new GameManagerService(roleFactoryChain);
+        wolfGameManager = new WolfGameManager();
 
     }
 
     @Test
-    void contextLoads() throws IOException {
+    void contextLoads() {
         Game game = new Game();
-        Player a = new Player();
-        a.setRole(new Seer());
-        Player b = new Player();
-        b.setRole(new Wolf());
-        Player c = new Player();
-        c.setRole(new Witch());
+        Player seer = new Player();
+        seer.setRole(new Seer());
+        Player wolf = new Player();
+        wolf.setRole(new Wolf());
+        Player witch = new Player();
+        witch.setRole(new Witch());
         Player d = new Player();
         d.setRole(new Witch());
-        game.setPlayers(Arrays.asList(a, b, c, d));
+        d.setRole(new Witch());
 
-//		Role role = new SeerFactory();
-//		game.setRoles();
-        gameManagerService.createGame(game);
-        gameManagerService.initStage();
-        gameManagerService.startGame();
+        game.setPlayers(Arrays.asList(seer, wolf, witch, d));
+        game.setHasChief(true);
+        game.setWinCondition(WinCondition.CATCH_ALL_WOLF);
 
-//        assert gameManagerService.get
+        wolfGameManager.createGame(game);
+        wolfGameManager.startGame();
+        wolfGameManager.processRoleAction(seer, Action.INSPECT, witch);
+        wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
+        wolfGameManager.processRoleAction(wolf, Action.KILL, witch);
+        wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
         System.out.println("Done");
-
-
     }
 
 

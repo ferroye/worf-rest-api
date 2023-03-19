@@ -1,12 +1,13 @@
 package com.worf.worf.service.domain.role;
 
-import com.worf.worf.service.domain.Ability;
+import com.worf.worf.service.domain.Action;
 
 import java.util.Arrays;
 
 public class Wolf extends Role{
 
     public Wolf(){
-        super.setAbilities(Arrays.asList(Ability.KILL,Ability.VOTE));
+        this.setRoleName(this.getClass().getSimpleName());
+        super.setAbilities(Arrays.asList(Action.KILL, Action.VOTE));
     }
 }

@@ -1,4 +1,4 @@
-package com.worf.worf.service.wolf.processor;
+package com.worf.worf.service.wolf.stage.processor;
 
 import com.worf.worf.service.StageProcessor;
 import com.worf.worf.service.domain.Game;
@@ -9,6 +9,6 @@ public class SeerProcessor implements StageProcessor {
     Logger LOGGER = LoggerFactory.getLogger(SeerProcessor.class);
     @Override
     public void process(Game game) {
-        LOGGER.info("Seer Holder");
+        LOGGER.info("Seer's turn.");
     }
 }

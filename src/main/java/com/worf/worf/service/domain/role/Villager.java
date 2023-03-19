@@ -1,11 +1,12 @@
 package com.worf.worf.service.domain.role;
 
-import com.worf.worf.service.domain.Ability;
+import com.worf.worf.service.domain.Action;
 
 import java.util.Arrays;
 
 public class Villager extends Role{
     public Villager(){
-        super.setAbilities(Arrays.asList(Ability.VOTE));
+        this.setRoleName(this.getClass().getSimpleName());
+        super.setAbilities(Arrays.asList(Action.VOTE));
     }
 }

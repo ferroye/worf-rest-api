@@ -1,4 +1,4 @@
-package com.worf.worf.service.wolf.stage;
+package com.worf.worf.service.wolf.stage.factory;
 
 import com.worf.worf.service.StageFactory;
 import com.worf.worf.service.StageProcessor;
@@ -14,11 +14,13 @@ public class StageFactoryChain implements StageFactory {
 
     public StageFactoryChain(StageFactory seerFactory,
                              StageFactory wolfFactory,
-                             StageFactory witchFactory) {
+                             StageFactory witchFactory,
+                             StageFactory chiefFactory) {
         this.stageFactoryChain = Arrays.asList(
                 seerFactory,
                 wolfFactory,
-                witchFactory);
+                witchFactory,
+                chiefFactory);
     }
 
     @Override

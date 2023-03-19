@@ -8,11 +8,9 @@ public interface GameManager {
 
     void initStage();
     boolean isGameOver();
-    void createGame(Game game);
+    String createGame(Game game);
     void endGame();
     void startGame();
     void processStage();
-    void processAction(Player source, Action action, Player target);
-
-
+    void processRoleAction(Player source, Action action, Player target);
 }

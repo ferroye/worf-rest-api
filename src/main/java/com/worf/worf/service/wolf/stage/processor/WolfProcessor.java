@@ -1,4 +1,4 @@
-package com.worf.worf.service.wolf.processor;
+package com.worf.worf.service.wolf.stage.processor;
 
 import com.worf.worf.service.StageProcessor;
 import com.worf.worf.service.domain.Game;

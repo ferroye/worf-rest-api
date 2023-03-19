@@ -1,10 +1,10 @@
-package com.worf.worf.service.wolf.stage;
+package com.worf.worf.service.wolf.stage.factory;
 
 import com.worf.worf.service.StageFactory;
 import com.worf.worf.service.StageProcessor;
 import com.worf.worf.service.domain.role.Role;
 import com.worf.worf.service.domain.role.Wolf;
-import com.worf.worf.service.wolf.processor.WolfProcessor;
+import com.worf.worf.service.wolf.stage.processor.WolfProcessor;
 import org.springframework.stereotype.Component;
 
 @Component
