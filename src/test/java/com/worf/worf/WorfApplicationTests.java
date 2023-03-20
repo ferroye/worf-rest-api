@@ -8,8 +8,10 @@ import com.worf.worf.service.domain.role.Seer;
 import com.worf.worf.service.domain.role.Witch;
 import com.worf.worf.service.domain.role.Wolf;
 import com.worf.worf.service.wolf.WolfGameManager;
+import com.worf.worf.service.wolf.stage.processor.RoleActionChain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
@@ -19,10 +21,12 @@ class WorfApplicationTests {
 
     WolfGameManager wolfGameManager;
 
+    @Autowired
+    RoleActionChain roleActionChain;
+
     @BeforeEach
     void init() {
-        wolfGameManager = new WolfGameManager();
-
+        wolfGameManager = new WolfGameManager(roleActionChain);
     }
 
     @Test
@@ -49,6 +53,7 @@ class WorfApplicationTests {
         wolfGameManager.processRoleAction(wolf, Action.KILL, witch);
         wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
         System.out.println("Done");
+//        wolfGameManager.processStage();
     }
 
 

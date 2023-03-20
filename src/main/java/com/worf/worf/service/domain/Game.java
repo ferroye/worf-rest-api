@@ -20,6 +20,7 @@ public class Game {
     private WinCondition winCondition;
     private List<String> gameActivities = new ArrayList<>();
     private boolean hasChief;
+    private boolean dayTime;
     private int nightNo;
     private Role curRoleActionStage;
     private Queue<Role> stages = new LinkedList();
