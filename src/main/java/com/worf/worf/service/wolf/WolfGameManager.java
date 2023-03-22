@@ -4,6 +4,7 @@ import com.worf.worf.service.GameManager;
 import com.worf.worf.service.domain.Action;
 import com.worf.worf.service.domain.Game;
 import com.worf.worf.service.domain.role.*;
+import com.worf.worf.service.exception.UnsupportedAction;
 import com.worf.worf.service.wolf.stage.processor.RoleActionChain;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -37,11 +38,15 @@ public class WolfGameManager implements GameManager {
                 this.game.setCurRoleActionStage(this.game.getStages().poll());
                 LOGGER.info("-------{}-------, stage left:{}", this.game.getCurRoleActionStage().getRoleName(), this.game.getStages().size());
             } else if (this.game.getStages().isEmpty()) {
+
+                // prepare to entering night.
+
+
                 //refresh stage for next night.
                 LOGGER.info("Entering day time");
                 LOGGER.info("--------------------");
                 this.initStage();
-                this.game.setCurRoleActionStage(null);
+                this.game.setCurRoleActionStage(new Voter());
                 this.game.setDayTime(true);
             } else {
                 this.game.setCurRoleActionStage(this.game.getStages().poll());
@@ -51,21 +56,29 @@ public class WolfGameManager implements GameManager {
     }
 
     @Override
-    public void processRoleAction(Player source, Action action, Player target) {
-        if (!this.hasStarted || this.isGameOver())
-            return;
-
-        if (this.game.isDayTime()) {
-            LOGGER.info("Day time action only.");
-        } else if (!this.game.getCurRoleActionStage().getRoleName().equals(source.getRole().getRoleName())) {
-            LOGGER.info("Not your turn.");
-        } else if (!source.getRole().getAbilities().contains(action)) {
-            LOGGER.info("You do not have this ability");
-        } else {
-            roleActionChain.process(source,action,target);
-            this.processStage();
+    public String processRoleAction(Player source, Action action, Player target) {
+        String response = null;
+        try{
+            if (!this.hasStarted || this.isGameOver())
+                return "Game has not started yet.";
+            if (this.game.isDayTime()) {
+                LOGGER.info("Day time action only.");
+            } else if (!this.game.getCurRoleActionStage().getRoleName().equals(source.getRole().getRoleName())) {
+                LOGGER.info("Not your turn.");
+            } else if (!source.getRole().getAbilities().contains(action)) {
+                LOGGER.info("You do not have this ability");
+            } else {
+                response = roleActionChain.process(source,action,target);
+                if(!response.isEmpty()){
+                    LOGGER.info(response);
+                    this.processStage();
+                }
+            }
+        }catch (UnsupportedAction ex){
+            LOGGER.error(ex.getMessage());
         }
 
+        return response;
     }
 
     @Override

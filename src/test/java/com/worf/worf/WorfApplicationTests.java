@@ -49,11 +49,12 @@ class WorfApplicationTests {
         wolfGameManager.createGame(game);
         wolfGameManager.startGame();
         wolfGameManager.processRoleAction(seer, Action.INSPECT, witch);
+        wolfGameManager.processRoleAction(witch, Action.POISON, witch);
+        wolfGameManager.processRoleAction(wolf, Action.KILL, seer);
         wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
+        System.out.println("*********************");
+        wolfGameManager.processStage();
         wolfGameManager.processRoleAction(wolf, Action.KILL, witch);
-        wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
-        System.out.println("Done");
-//        wolfGameManager.processStage();
     }
 
 

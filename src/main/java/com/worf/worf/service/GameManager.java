@@ -12,5 +12,5 @@ public interface GameManager {
     void endGame();
     void startGame();
     void processStage();
-    void processRoleAction(Player source, Action action, Player target);
+    String processRoleAction(Player source, Action action, Player target);
 }

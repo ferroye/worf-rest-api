@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -23,6 +22,6 @@ public class Game {
     private boolean dayTime;
     private int nightNo;
     private Role curRoleActionStage;
-    private Queue<Role> stages = new LinkedList();
+    private Queue<Role> stages;
     private int totalStagesCount;
 }
