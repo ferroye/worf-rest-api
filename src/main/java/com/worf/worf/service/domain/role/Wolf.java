@@ -9,5 +9,6 @@ public class Wolf extends Role{
     public Wolf(){
         this.setRoleName(this.getClass().getSimpleName());
         super.setAbilities(Arrays.asList(Action.KILL, Action.VOTE));
+        this.setPriority(Priority.WOLF);
     }
 }

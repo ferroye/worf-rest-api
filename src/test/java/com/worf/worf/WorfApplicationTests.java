@@ -3,10 +3,7 @@ package com.worf.worf;
 import com.worf.worf.service.domain.Action;
 import com.worf.worf.service.domain.Game;
 import com.worf.worf.service.domain.WinCondition;
-import com.worf.worf.service.domain.role.Player;
-import com.worf.worf.service.domain.role.Seer;
-import com.worf.worf.service.domain.role.Witch;
-import com.worf.worf.service.domain.role.Wolf;
+import com.worf.worf.service.domain.role.*;
 import com.worf.worf.service.wolf.WolfGameManager;
 import com.worf.worf.service.wolf.stage.processor.RoleActionChain;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,19 +27,22 @@ class WorfApplicationTests {
     }
 
     @Test
-    void contextLoads() {
+    void normalGame() {
         Game game = new Game();
         Player seer = new Player();
+        seer.setPlayerId(0);
         seer.setRole(new Seer());
         Player wolf = new Player();
+        wolf.setPlayerId(1);
         wolf.setRole(new Wolf());
         Player witch = new Player();
+        witch.setPlayerId(2);
         witch.setRole(new Witch());
-        Player d = new Player();
-        d.setRole(new Witch());
-        d.setRole(new Witch());
+        Player villager = new Player();
+        villager.setRole(new Villager());
+        villager.setPlayerId(3);
 
-        game.setPlayers(Arrays.asList(seer, wolf, witch, d));
+        game.setPlayers(Arrays.asList(seer, wolf, witch, villager));
         game.setHasChief(true);
         game.setWinCondition(WinCondition.CATCH_ALL_WOLF);
 
@@ -52,9 +52,9 @@ class WorfApplicationTests {
         wolfGameManager.processRoleAction(witch, Action.POISON, witch);
         wolfGameManager.processRoleAction(wolf, Action.KILL, seer);
         wolfGameManager.processRoleAction(witch, Action.SAVE, witch);
-        System.out.println("*********************");
-        wolfGameManager.processStage();
-        wolfGameManager.processRoleAction(wolf, Action.KILL, witch);
+
+        wolfGameManager.processRoleAction(wolf, Action.VOTE, witch);
+        wolfGameManager.processRoleAction(seer, Action.VOTE, witch);
     }
 
 

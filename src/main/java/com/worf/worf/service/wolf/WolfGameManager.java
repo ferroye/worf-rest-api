@@ -2,6 +2,8 @@ package com.worf.worf.service.wolf;
 
 import com.worf.worf.service.GameManager;
 import com.worf.worf.service.domain.Action;
+import com.worf.worf.service.domain.ActionProcessorStatus;
+import com.worf.worf.service.domain.ActionResponse;
 import com.worf.worf.service.domain.Game;
 import com.worf.worf.service.domain.role.*;
 import com.worf.worf.service.exception.UnsupportedAction;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,6 +37,7 @@ public class WolfGameManager implements GameManager {
             if (this.game.getStages().size() == this.game.getTotalStagesCount()) {
                 LOGGER.info("--------------------");
                 LOGGER.info("Entering night time");
+                this.game.setNightNo(this.game.getNightNo() + 1);
                 this.game.setDayTime(false);
                 this.game.setCurRoleActionStage(this.game.getStages().poll());
                 LOGGER.info("-------{}-------, stage left:{}", this.game.getCurRoleActionStage().getRoleName(), this.game.getStages().size());
@@ -57,41 +61,45 @@ public class WolfGameManager implements GameManager {
 
     @Override
     public String processRoleAction(Player source, Action action, Player target) {
-        String response = null;
-        try{
+        ActionResponse response = null;
+        try {
             if (!this.hasStarted || this.isGameOver())
                 return "Game has not started yet.";
-            if (this.game.isDayTime()) {
+
+            if (this.game.isDayTime() && !game.getDaytimeAction().contains(action)) {
                 LOGGER.info("Day time action only.");
-            } else if (!this.game.getCurRoleActionStage().getRoleName().equals(source.getRole().getRoleName())) {
+            } else if ( !this.game.isDayTime() &&!this.game.getCurRoleActionStage().getRoleName().equals(source.getRole().getRoleName())) {
                 LOGGER.info("Not your turn.");
             } else if (!source.getRole().getAbilities().contains(action)) {
                 LOGGER.info("You do not have this ability");
             } else {
-                response = roleActionChain.process(source,action,target);
-                if(!response.isEmpty()){
-                    LOGGER.info(response);
+                response = roleActionChain.process(source, action, target);
+                if (response != null && response.getActionStatus() == ActionProcessorStatus.DONE) {
+                    LOGGER.info("Response : {}", response);
                     this.processStage();
                 }
             }
-        }catch (UnsupportedAction ex){
+        } catch (UnsupportedAction ex) {
             LOGGER.error(ex.getMessage());
         }
 
-        return response;
+        if(response==null){
+            return "No action was preformed.";
+        }
+        return response.getMessage();
     }
 
     @Override
     public void initStage() {
         LOGGER.info("init stages.");
         game.setStages(new LinkedList<>());
-        for (Role role : game.getPlayers().stream().map(Player::getRole).distinct().collect(Collectors.toList())) {
+        for (Role role : game.getPlayers()
+                .stream()
+                .sorted(Comparator.comparing(player -> player.getRole().getPriority()))
+                .map(Player::getRole).filter(role -> !(role instanceof Villager))
+                .distinct().collect(Collectors.toList())) {
             game.getStages().add(role);
         }
-//        adding additonal stage as needed
-//        if (this.game.isHasChief()) {
-//            game.getStages().add(new Chief());
-//        }
     }
 
     @Override

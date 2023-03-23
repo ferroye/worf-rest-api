@@ -15,4 +15,5 @@ import java.util.List;
 public abstract class Role{
     private String roleName;
     private List<Action> abilities;
+    private Priority priority = Priority.OTHERS;
 }

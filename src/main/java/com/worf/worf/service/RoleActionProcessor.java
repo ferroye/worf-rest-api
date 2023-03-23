@@ -1,6 +1,7 @@
 package com.worf.worf.service;
 
 import com.worf.worf.service.domain.Action;
+import com.worf.worf.service.domain.ActionResponse;
 import com.worf.worf.service.domain.Game;
 import com.worf.worf.service.domain.role.Player;
 import lombok.Getter;
@@ -10,10 +11,10 @@ import java.util.Random;
 
 @Getter
 @Setter
-public abstract class RoleActionProcessor {
+public abstract class   RoleActionProcessor {
     private Game game;
 
-    public abstract String process(Player source, Action action, Player target);
+    public abstract ActionResponse process(Player source, Action action, Player target);
 
     public void sleep() {
         Random random = new Random();

@@ -8,5 +8,6 @@ public class Seer extends God {
     public Seer(){
         this.setRoleName(this.getClass().getSimpleName());
         super.setAbilities(Arrays.asList(Action.VOTE, Action.INSPECT));
+        this.setPriority(Priority.SEER);
     }
 }

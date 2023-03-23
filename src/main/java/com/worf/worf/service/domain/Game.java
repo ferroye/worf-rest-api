@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -24,4 +25,5 @@ public class Game {
     private Role curRoleActionStage;
     private Queue<Role> stages;
     private int totalStagesCount;
+    private List<Action> daytimeAction = Arrays.asList(Action.VOTE,Action.EXTRA_VOTE,Action.GIVE_BADGE);
 }
